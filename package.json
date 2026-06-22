@@ -1,0 +1,49 @@
+{
+  "name": "event-invites-he",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "dev:local": "node scripts/dev-local.mjs",
+    "build": "prisma generate && next build",
+    "start": "next start",
+    "db:pglite": "pglite-server --db=./.pglite --host=127.0.0.1 --port=5432 --max-connections=10",
+    "db:push": "prisma db push",
+    "db:setup": "prisma db push && prisma db seed",
+    "prisma:generate": "prisma generate",
+    "prisma:migrate": "prisma migrate dev",
+    "db:seed": "prisma db seed"
+  },
+  "dependencies": {
+    "@prisma/client": "6.19.3",
+    "bcryptjs": "3.0.3",
+    "clsx": "2.1.1",
+    "firebase": "^12.15.0",
+    "jose": "6.2.3",
+    "lucide-react": "1.21.0",
+    "next": "16.2.9",
+    "papaparse": "5.5.4",
+    "react": "19.2.7",
+    "react-dom": "19.2.7",
+    "zod": "4.4.3"
+  },
+  "devDependencies": {
+    "@electric-sql/pglite": "0.5.3",
+    "@electric-sql/pglite-socket": "0.2.4",
+    "@tailwindcss/postcss": "4.3.1",
+    "@types/node": "26.0.0",
+    "@types/papaparse": "5.5.2",
+    "@types/react": "19.2.17",
+    "@types/react-dom": "19.2.3",
+    "dotenv": "17.4.2",
+    "eslint": "9.39.2",
+    "eslint-config-next": "16.2.9",
+    "prisma": "6.19.3",
+    "tailwindcss": "4.3.1",
+    "tsx": "4.22.4",
+    "typescript": "6.0.3"
+  },
+  "overrides": {
+    "postcss": "8.5.15"
+  }
+}
