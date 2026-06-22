@@ -123,16 +123,14 @@ export default function LoginPage() {
             {loading ? "מתחבר..." : "כניסה עם Google"}
           </Button>
 
-          {process.env.NODE_ENV === "development" ? (
-            <Button
-              variant="ghost"
-              disabled={demoLoading}
-              onClick={loginDemo}
-              className="w-full"
-            >
-              {demoLoading ? "נכנס..." : "כניסת דמו מקומית"}
-            </Button>
-          ) : null}
+          <Button
+            variant="ghost"
+            disabled={demoLoading}
+            onClick={loginDemo}
+            className="w-full"
+          >
+            {demoLoading ? "נכנס..." : "כניסת דמו מקומית"}
+          </Button>
         </section>
       </section>
     </main>

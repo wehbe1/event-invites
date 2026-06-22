@@ -2,31 +2,24 @@
 
 ## Supabase environment variables
 
-You currently have this direct Supabase host:
+Supabase showed these Prisma connection strings for project `arlovvnixidszlzixifm`.
+Replace `YOUR_PASSWORD` with the database password inside Vercel or your local
+`.env`; do not paste the password into chat.
 
-```text
-db.arlovvnixidszlzixifm.supabase.co
-```
-
-Set this locally when running database setup against Supabase:
+Use the transaction pooler for Vercel runtime:
 
 ```env
-DIRECT_URL="postgresql://postgres:YOUR_PASSWORD@db.arlovvnixidszlzixifm.supabase.co:5432/postgres?sslmode=require&schema=public"
+DATABASE_URL="postgresql://postgres.arlovvnixidszlzixifm:YOUR_PASSWORD@aws-0-eu-west-1.pooler.supabase.com:6543/postgres?pgbouncer=true"
 ```
 
-For Vercel runtime, prefer the Supabase pooled/session connection string from:
-
-```text
-Supabase Dashboard -> Project Settings -> Database -> Connection string -> Pooler
-```
-
-It usually looks like this:
+Use the session pooler for Prisma schema setup and migrations:
 
 ```env
-DATABASE_URL="postgresql://postgres.PROJECT_REF:YOUR_PASSWORD@POOLER_HOST:6543/postgres?sslmode=require&pgbouncer=true&connection_limit=1&schema=public"
+DIRECT_URL="postgresql://postgres.arlovvnixidszlzixifm:YOUR_PASSWORD@aws-0-eu-west-1.pooler.supabase.com:5432/postgres"
 ```
 
-If you cannot find the pooler URL yet, you can temporarily use the direct URL as `DATABASE_URL`, but pooled is safer for Vercel serverless.
+The old direct host `db.arlovvnixidszlzixifm.supabase.co:5432` can fail from
+Vercel in some environments, so avoid using it as `DATABASE_URL`.
 
 ## Vercel environment variables
 
@@ -44,7 +37,7 @@ NEXT_PUBLIC_APP_URL=
 BIT_PAYMENT_URL=
 ```
 
-Firebase variables will be added when Google login is implemented:
+Firebase variables:
 
 ```env
 NEXT_PUBLIC_FIREBASE_API_KEY=
@@ -91,5 +84,5 @@ prisma db seed
 
 - Supabase project ref appears to be `arlovvnixidszlzixifm`.
 - The database password is still needed.
-- The Supabase pooler connection string is still recommended for Vercel.
+- The Supabase pooler connection string is required for the Vercel runtime.
 - `npx skills add supabase/agent-skills` is optional and not required for this codebase to run.
