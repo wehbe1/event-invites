@@ -7,6 +7,24 @@ import { CalendarCheck, LogIn } from "lucide-react";
 import { Button } from "@/components/Button";
 import { firebaseAuth, googleProvider } from "@/lib/firebase/client";
 
+function friendlyGoogleError(error: unknown) {
+  const message = error instanceof Error ? error.message : "";
+
+  if (message.includes("auth/unauthorized-domain")) {
+    return "הדומיין של האתר כבר הוגדר ב-Firebase. רענן את העמוד ונסה שוב. אם אתה בדפדפן מובנה, פתח את האתר בדפדפן רגיל או השתמש בכניסת דמו.";
+  }
+
+  if (
+    message.includes("auth/popup-blocked") ||
+    message.includes("auth/popup-closed-by-user") ||
+    message.includes("requested action is invalid")
+  ) {
+    return "הדפדפן חסם או שיבש את חלון Google. פתח את האתר בדפדפן רגיל או השתמש בכניסת דמו.";
+  }
+
+  return message || "לא הצלחנו להיכנס עם Google";
+}
+
 export default function LoginPage() {
   const router = useRouter();
   const [error, setError] = useState("");
@@ -34,11 +52,7 @@ export default function LoginPage() {
 
       router.replace("/dashboard");
     } catch (loginError) {
-      setError(
-        loginError instanceof Error
-          ? loginError.message
-          : "לא הצלחנו להיכנס עם Google"
-      );
+      setError(friendlyGoogleError(loginError));
     } finally {
       setLoading(false);
     }
