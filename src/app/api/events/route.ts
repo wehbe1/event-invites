@@ -44,6 +44,7 @@ export async function POST(request: NextRequest) {
         longitude: location.longitude,
         googleMapsUrl: location.googleMapsUrl,
         wazeUrl: location.wazeUrl,
+        bitPhoneNumber: data.bitPhoneNumber,
         description: data.description,
         organizerName: data.organizerName
       },

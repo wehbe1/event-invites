@@ -1,7 +1,7 @@
 "use client";
 
 import { FormEvent, useState } from "react";
-import { CalendarPlus, LocateFixed, MapPinned, Save } from "lucide-react";
+import { CalendarPlus, Gift, LocateFixed, MapPinned, Save } from "lucide-react";
 import { Button } from "@/components/Button";
 import { Field, Input, Textarea } from "@/components/Field";
 import {
@@ -21,6 +21,7 @@ export type EventFormValues = {
   longitude: string;
   googleMapsUrl: string;
   wazeUrl: string;
+  bitPhoneNumber: string;
   description: string;
   organizerName: string;
 };
@@ -57,6 +58,7 @@ function eventToForm(event?: SerializedEvent): EventFormValues {
     longitude: event?.longitude?.toString() ?? "",
     googleMapsUrl: event?.googleMapsUrl ?? "",
     wazeUrl: event?.wazeUrl ?? "",
+    bitPhoneNumber: event?.bitPhoneNumber ?? "",
     description: event?.description ?? "קבלת פנים, חופה וריקודים",
     organizerName: event?.organizerName ?? "נועה ועידו"
   };
@@ -239,6 +241,26 @@ export function EventForm({ mode, initialEvent, onSubmit }: EventFormProps) {
             {geoNotice}
           </div>
         ) : null}
+      </section>
+
+      <section className="grid gap-4 rounded-lg bg-amber-50 p-4">
+        <div className="flex items-center gap-2 font-bold text-slate-950">
+          <Gift size={18} aria-hidden="true" />
+          מתנות ב-bit
+        </div>
+        <p className="text-sm leading-6 text-slate-600">
+          המספר הזה יוצג לאורחים שבוחרים לשלוח מתנה. עד לחיבור רשמי ל-bit Business,
+          האורח יקבל מספר ברור להעתקה ופתיחת bit.
+        </p>
+        <Field label="מספר לקבלת מתנות ב-bit">
+          <Input
+            value={form.bitPhoneNumber}
+            dir="ltr"
+            inputMode="tel"
+            onChange={(event) => update("bitPhoneNumber", event.target.value)}
+            placeholder="050-000-0000"
+          />
+        </Field>
       </section>
 
       <Field label="שם המארגן/ת">

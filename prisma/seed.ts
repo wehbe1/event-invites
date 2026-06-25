@@ -28,7 +28,8 @@ async function main() {
       latitude: 32.173247,
       longitude: 34.843512,
       googleMapsUrl: "https://www.google.com/maps?q=32.173247,34.843512",
-      wazeUrl: "https://waze.com/ul?ll=32.173247,34.843512&navigate=yes"
+      wazeUrl: "https://waze.com/ul?ll=32.173247,34.843512&navigate=yes",
+      bitPhoneNumber: "050-000-0000"
     },
     create: {
       id: "demo-event",
@@ -43,6 +44,7 @@ async function main() {
       longitude: 34.843512,
       googleMapsUrl: "https://www.google.com/maps?q=32.173247,34.843512",
       wazeUrl: "https://waze.com/ul?ll=32.173247,34.843512&navigate=yes",
+      bitPhoneNumber: "050-000-0000",
       description: "קבלת פנים, חופה וריקודים",
       organizerName: "נועה ועידו"
     }

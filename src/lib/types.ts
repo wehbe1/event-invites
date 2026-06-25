@@ -45,6 +45,7 @@ export type SerializedEvent = {
   longitude: number | null;
   googleMapsUrl: string | null;
   wazeUrl: string | null;
+  bitPhoneNumber: string | null;
   description: string | null;
   organizerName: string;
   createdAt: string;

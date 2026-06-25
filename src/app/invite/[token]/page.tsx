@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
-import { CalendarDays, ExternalLink, Gift, MapPin, X } from "lucide-react";
+import { CalendarDays, Copy, ExternalLink, Gift, MapPin, X } from "lucide-react";
 import { Button } from "@/components/Button";
 import { StatusBadge } from "@/components/StatusBadge";
 import { formatDate } from "@/lib/format";
@@ -21,6 +21,7 @@ type PublicEvent = {
   longitude: number | null;
   googleMapsUrl: string | null;
   wazeUrl: string | null;
+  bitPhoneNumber: string | null;
   description: string | null;
   organizerName: string;
 };
@@ -35,6 +36,8 @@ export default function InvitePage() {
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState<GuestStatus | null>(null);
   const [paymentUrl, setPaymentUrl] = useState<string | null>(null);
+  const [paymentPhoneNumber, setPaymentPhoneNumber] = useState<string | null>(null);
+  const [copyNotice, setCopyNotice] = useState("");
   const [error, setError] = useState("");
 
   useEffect(() => {
@@ -53,6 +56,8 @@ export default function InvitePage() {
     setSubmitting(status);
     setError("");
     setPaymentUrl(null);
+    setPaymentPhoneNumber(null);
+    setCopyNotice("");
 
     const response = await fetch(`/api/invite/${token}/respond`, {
       method: "POST",
@@ -64,13 +69,24 @@ export default function InvitePage() {
 
     if (!response.ok) {
       const body = await response.json().catch(() => null);
-      setError(body?.error ?? "לא הצלחנו לעדכן תשובה");
+      setError(body?.error ?? "לא הצלחנו לעדכן את התשובה");
       return;
     }
 
     const body = await response.json();
     setGuest(body.guest);
     setPaymentUrl(body.paymentUrl ?? null);
+    setPaymentPhoneNumber(body.paymentPhoneNumber ?? null);
+  }
+
+  async function copyBitPhoneNumber() {
+    const phone = paymentPhoneNumber ?? event?.bitPhoneNumber;
+    if (!phone) {
+      return;
+    }
+
+    await navigator.clipboard?.writeText(phone);
+    setCopyNotice("מספר הביט הועתק");
   }
 
   return (
@@ -176,16 +192,44 @@ export default function InvitePage() {
               </div>
             ) : null}
 
-            {paymentUrl ? (
+            {guest.status === "gift_only" ? (
               <div className="grid gap-3 rounded-lg bg-sky-50 px-4 py-3 text-sm text-sky-900">
-                <b>קישור bit עסקי</b>
-                <a
-                  href={paymentUrl}
-                  target="_blank"
-                  className="inline-flex min-h-10 items-center justify-center rounded-lg bg-sky-600 px-4 py-2 font-bold text-white"
-                >
-                  פתיחת bit
-                </a>
+                <b>שליחת מתנה ב-bit</b>
+                {paymentPhoneNumber || event.bitPhoneNumber ? (
+                  <>
+                    <div className="rounded-lg bg-white p-3">
+                      <div className="text-xs font-bold text-sky-700">
+                        מספר הביט של המארגן/ת
+                      </div>
+                      <div className="mt-1 text-2xl font-black text-slate-950" dir="ltr">
+                        {paymentPhoneNumber ?? event.bitPhoneNumber}
+                      </div>
+                    </div>
+                    <Button
+                      variant="secondary"
+                      icon={<Copy size={17} aria-hidden="true" />}
+                      onClick={copyBitPhoneNumber}
+                    >
+                      העתקת מספר ביט
+                    </Button>
+                    {copyNotice ? (
+                      <div className="text-sm font-bold text-emerald-700">{copyNotice}</div>
+                    ) : null}
+                  </>
+                ) : (
+                  <div className="rounded-lg bg-amber-50 px-3 py-2 font-semibold text-amber-800">
+                    המארגן/ת עדיין לא הגדיר/ה מספר לקבלת מתנות ב-bit.
+                  </div>
+                )}
+                {paymentUrl ? (
+                  <a
+                    href={paymentUrl}
+                    target="_blank"
+                    className="inline-flex min-h-10 items-center justify-center rounded-lg bg-sky-600 px-4 py-2 font-bold text-white"
+                  >
+                    פתיחת bit
+                  </a>
+                ) : null}
               </div>
             ) : null}
 

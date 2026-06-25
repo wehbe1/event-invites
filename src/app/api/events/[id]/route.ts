@@ -77,6 +77,7 @@ export async function PATCH(request: NextRequest, { params }: RouteContext) {
         longitude: location.longitude,
         googleMapsUrl: location.googleMapsUrl,
         wazeUrl: location.wazeUrl,
+        bitPhoneNumber: data.bitPhoneNumber,
         description: data.description,
         organizerName: data.organizerName
       },

@@ -33,13 +33,15 @@ export async function POST(request: NextRequest, { params }: RouteContext) {
       data.status === "gift_only"
         ? await new BitBusinessPlaceholder().createPaymentLink({
             guestId: guest.id,
-            eventId: guest.eventId
+            eventId: guest.eventId,
+            phoneNumber: guest.event.bitPhoneNumber
           })
         : null;
 
     return NextResponse.json({
       guest: serializeGuest(updated),
-      paymentUrl: payment?.url ?? null
+      paymentUrl: payment?.url ?? null,
+      paymentPhoneNumber: payment?.phoneNumber ?? null
     });
   } catch (error) {
     return jsonError(error);

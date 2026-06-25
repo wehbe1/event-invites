@@ -22,8 +22,9 @@ export interface BitBusinessPayments {
   createPaymentLink(input: {
     guestId: string;
     eventId: string;
+    phoneNumber?: string | null;
     amount?: number;
-  }): Promise<{ url: string; providerPaymentId?: string }>;
+  }): Promise<{ url: string; phoneNumber?: string | null; providerPaymentId?: string }>;
 }
 
 export class TwilioSmsPlaceholder implements SmsGateway {
@@ -39,15 +40,17 @@ export class WhatsAppBusinessPlaceholder implements WhatsAppBusinessGateway {
 }
 
 export class BitBusinessPlaceholder implements BitBusinessPayments {
-  async createPaymentLink(_input: {
+  async createPaymentLink(input: {
     guestId: string;
     eventId: string;
+    phoneNumber?: string | null;
     amount?: number;
   }) {
     return {
+      phoneNumber: input.phoneNumber ?? null,
       url:
         process.env.BIT_PAYMENT_URL ??
-        "https://www.bitpay.co.il/app/business/example"
+        "https://www.bitpay.co.il/he"
     };
   }
 }

@@ -67,6 +67,7 @@ export function GuestManager({ eventId }: { eventId: string }) {
   const [loading, setLoading] = useState(true);
   const [sending, setSending] = useState<InvitationChannel | null>(null);
   const [links, setLinks] = useState<InvitationLink[]>([]);
+  const [contactsSupported, setContactsSupported] = useState(false);
   const [newGuest, setNewGuest] = useState({
     fullName: "",
     phoneNumber: "",
@@ -85,6 +86,11 @@ export function GuestManager({ eventId }: { eventId: string }) {
   useEffect(() => {
     load();
   }, [eventId]);
+
+  useEffect(() => {
+    const contactNavigator = navigator as ContactManager;
+    setContactsSupported(Boolean(contactNavigator.contacts?.select));
+  }, []);
 
   useEffect(() => {
     const nextDrafts: Record<string, Draft> = {};
@@ -400,7 +406,14 @@ export function GuestManager({ eventId }: { eventId: string }) {
           </div>
         </form>
 
-        <div className="flex flex-wrap items-center gap-2">
+        <div className="grid gap-3 rounded-lg bg-slate-50 p-4">
+          <div>
+            <h3 className="font-bold text-slate-950">ייבוא אורחים</h3>
+            <p className="mt-1 text-sm leading-6 text-slate-600">
+              אפשר להעלות CSV או לבחור אנשי קשר מהמכשיר. בחירת אנשי קשר תיפתח רק אחרי לחיצה ורק אם הדפדפן תומך בכך.
+            </p>
+          </div>
+          <div className="flex flex-wrap items-center gap-2">
           <label className="inline-flex min-h-10 cursor-pointer items-center gap-2 rounded-lg bg-white px-4 py-2 text-sm font-semibold text-slate-900 ring-1 ring-slate-200 transition hover:bg-slate-50">
             <FileUp size={17} aria-hidden="true" />
             ייבוא CSV
@@ -410,10 +423,18 @@ export function GuestManager({ eventId }: { eventId: string }) {
             variant="ghost"
             icon={<UsersRound size={17} aria-hidden="true" />}
             onClick={pickContacts}
+            title={
+              contactsSupported
+                ? "בחירה מאנשי הקשר של המכשיר"
+                : "הדפדפן הזה לא תומך בבחירת אנשי קשר"
+            }
           >
             אנשי קשר
           </Button>
-          <div className="flex flex-wrap gap-1">
+          </div>
+        </div>
+
+        <div className="flex flex-wrap gap-1">
             {statuses.map((status) => (
               <button
                 key={status}
@@ -429,7 +450,6 @@ export function GuestManager({ eventId }: { eventId: string }) {
               </button>
             ))}
           </div>
-        </div>
 
         {error ? (
           <div className="rounded-lg bg-rose-50 px-3 py-2 text-sm font-semibold text-rose-700">

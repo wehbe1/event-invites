@@ -28,6 +28,7 @@ export const eventSchema = z.object({
   ),
   googleMapsUrl: z.string().trim().optional().default(""),
   wazeUrl: z.string().trim().optional().default(""),
+  bitPhoneNumber: z.string().trim().optional().default(""),
   description: z.string().trim().optional().default(""),
   organizerName: z.string().trim().min(2)
 });
